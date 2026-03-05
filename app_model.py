@@ -18,7 +18,7 @@ from sklearn.metrics import confusion_matrix, classification_report
 
 dataset_puskesmas='https://drive.google.com/uc?id=1_a6uKLJrEqF90wmkNuTxgt2wTBCbKmkv'
 dataset_kaggle= 'https://drive.google.com/uc?id=1x0qhULl__-JKq8_n4-nkF7qtH-8hIRix'
-model= r"C:\Users\Asus\Desktop\SKRIPSI\CODE\DeployApp\model_gizi.sav"
+model= r"model_gizi.sav"
 label_map = {
         0: "Gizi Baik",
         1: "Gizi Kurang",
