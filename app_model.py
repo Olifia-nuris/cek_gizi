@@ -48,6 +48,7 @@ if smoteenn_data:
     y_res = smoteenn_data['y_res']
 # load model preprocesing
 encoders = model_gizi.get('encoder')      # label encoder
+st.write("Isi encoder:", encoders.keys())
 scaler = model_gizi.get('scaler')         # scaler MinMax/Standard
 model_adb = model_gizi['adaboost']['models']
 betas_adb = model_gizi['adaboost']['betas']
