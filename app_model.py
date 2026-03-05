@@ -2,13 +2,11 @@ import streamlit as st
 import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
-import re
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import LocalOutlierFactor
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from imblearn.over_sampling import SMOTE
 from collections import Counter
 import math
 import os
