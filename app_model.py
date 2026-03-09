@@ -60,7 +60,8 @@ outlier =model_gizi.get('dok_outlier')
 # Sidebar menu
 menu = st.sidebar.selectbox(
     "Main Menu",
-    options=["Home", "Hasil Klasifikasi", "prediksi"],
+    # options=["Home", "Hasil Klasifikasi", "prediksi"],
+    options=["Home","prediksi"],
     index=0
 )
 
@@ -229,159 +230,159 @@ if menu == "Home":
 
     else:
         st.warning("Dataset belum dapat dimuat.")
-elif menu == "Hasil Klasifikasi":
-    st.header("📊 Hasil model terbaik dari skenario uji coba SMOTE-ENN, Algoritma C5.0 dan AdaBoost")
+# elif menu == "Hasil Klasifikasi":
+#     st.header("📊 Hasil model terbaik dari skenario uji coba SMOTE-ENN, Algoritma C5.0 dan AdaBoost")
 
-    # ============================
-    # ======= MODEL C5.0 =========
-    # ============================
-    st.subheader("🌳 Model Algoritma C5.0")
+#     # ============================
+#     # ======= MODEL C5.0 =========
+#     # ============================
+#     st.subheader("🌳 Model Algoritma C5.0")
 
-    tree_c50 = model_gizi['algoritma.C5']['tree']
-    depth = model_gizi['algoritma.C5']['depth']
+#     tree_c50 = model_gizi['algoritma.C5']['tree']
+#     depth = model_gizi['algoritma.C5']['depth']
 
-    X_test = model_gizi['X_test']
-    y_test = model_gizi['y_test']
-    def mayoritas_kelas(gizi,target,default=None):
-        if gizi.empty:
-            return default
-        return (gizi.groupby(target)['bobot'].sum().idxmax())
+#     X_test = model_gizi['X_test']
+#     y_test = model_gizi['y_test']
+#     def mayoritas_kelas(gizi,target,default=None):
+#         if gizi.empty:
+#             return default
+#         return (gizi.groupby(target)['bobot'].sum().idxmax())
 
-    def prediksi_c50(baris, node, data_latih, target):
-        if not isinstance(node, dict):
-            return node
-        atr = node['atribut']
-        if atr in kolom_kategorik:
-            nilai = baris[atr]
-            if nilai in node:
-                return prediksi_c50(baris, node[nilai], data_latih, target)
-            else:
-                return mayoritas_kelas(data_latih, target,default=mayoritas_kelas(data_latih, target))
-        else:
-            nilai = baris[atr]
-            batas = node['mean']
-            if nilai < batas:
-                return prediksi_c50(baris, node['kiri'], data_latih, target)
-            else:
-                return prediksi_c50(baris, node['kanan'], data_latih, target)
+#     def prediksi_c50(baris, node, data_latih, target):
+#         if not isinstance(node, dict):
+#             return node
+#         atr = node['atribut']
+#         if atr in kolom_kategorik:
+#             nilai = baris[atr]
+#             if nilai in node:
+#                 return prediksi_c50(baris, node[nilai], data_latih, target)
+#             else:
+#                 return mayoritas_kelas(data_latih, target,default=mayoritas_kelas(data_latih, target))
+#         else:
+#             nilai = baris[atr]
+#             batas = node['mean']
+#             if nilai < batas:
+#                 return prediksi_c50(baris, node['kiri'], data_latih, target)
+#             else:
+#                 return prediksi_c50(baris, node['kanan'], data_latih, target)
 
-    # Prediksi semua data test C5.0
-    y_pred = [
-        prediksi_c50(X_test.iloc[i], tree_c50, data_latih, target)
-        for i in range(len(X_test))
-    ]
-    # Paksa y_test jadi angka
-    y_test = pd.Series(y_test).astype(int)
+#     # Prediksi semua data test C5.0
+#     y_pred = [
+#         prediksi_c50(X_test.iloc[i], tree_c50, data_latih, target)
+#         for i in range(len(X_test))
+#     ]
+#     # Paksa y_test jadi angka
+#     y_test = pd.Series(y_test).astype(int)
 
-    # Mapping label string → angka
-    reverse_label_map = {
-        "Gizi Baik": 0,
-        "Gizi Kurang": 1,
-        "Gizi Lebih": 2
-    }
+#     # Mapping label string → angka
+#     reverse_label_map = {
+#         "Gizi Baik": 0,
+#         "Gizi Kurang": 1,
+#         "Gizi Lebih": 2
+#     }
 
-    # Paksa semua prediksi jadi string dulu lalu map
-    y_pred = [str(i).strip() for i in y_pred]
-    y_pred = [reverse_label_map.get(i, 0) for i in y_pred]
-
-
-    # =======================
-    #     EVALUASI C5.0
-    # =======================
-    acc = accuracy_score(y_test, y_pred)
-    cm = confusion_matrix(y_test, y_pred)
-
-    precision, recall, f1, _ = precision_recall_fscore_support(
-        y_test, y_pred, average="macro", zero_division=0
-    )
-
-    sensitivity = recall
-    gmean = math.sqrt(precision * recall)
-
-    metrik_df = pd.DataFrame({
-        "Metrik": ["Accuracy", "Precision", "Recall (Sensitivity)", "F1-Score", "G-Mean"],
-        "Nilai": [acc, precision, recall, f1, gmean]
-    })
-
-    st.subheader("📌 Tabel Evaluasi Model C5.0")
-    st.dataframe(metrik_df)
-
-    st.subheader("📌 Confusion Matrix")
-    st.dataframe(pd.DataFrame(cm))
-
-    # =======================
-    # Sample Prediksi C5.0
-    # =======================
-    st.subheader("📄 Perbandingan Prediksi vs Aktual")
-
-    sample_size = 10
-    sample_df = X_test.head(sample_size).copy()
-    sample_df["Actual"] = y_test[:sample_size].values
-    sample_df["Predict"] = y_pred[:sample_size]
-    st.dataframe(sample_df)
+#     # Paksa semua prediksi jadi string dulu lalu map
+#     y_pred = [str(i).strip() for i in y_pred]
+#     y_pred = [reverse_label_map.get(i, 0) for i in y_pred]
 
 
-    # ================================================================
-    # ====================    ADABOOST + C5.0    ======================
-    # ================================================================
-    st.subheader("🌳 Model Algoritma C5.0 + ADABOOST")
-    st.markdown(""" Algoritma C5.0 digunakan sebagai base learner dari metode ensemble
-                 Adaboost guna meningkatkan akurasi dibandingkan model tunggal.""")
+#     # =======================
+#     #     EVALUASI C5.0
+#     # =======================
+#     acc = accuracy_score(y_test, y_pred)
+#     cm = confusion_matrix(y_test, y_pred)
 
-    model_adb = model_gizi['adaboost']['models']
-    betas_adb = model_gizi['adaboost']['betas']
-    clas_adb = np.array(model_gizi['adaboost']['classes'])   # pastikan array
+#     precision, recall, f1, _ = precision_recall_fscore_support(
+#         y_test, y_pred, average="macro", zero_division=0
+#     )
+
+#     sensitivity = recall
+#     gmean = math.sqrt(precision * recall)
+
+#     metrik_df = pd.DataFrame({
+#         "Metrik": ["Accuracy", "Precision", "Recall (Sensitivity)", "F1-Score", "G-Mean"],
+#         "Nilai": [acc, precision, recall, f1, gmean]
+#     })
+
+#     st.subheader("📌 Tabel Evaluasi Model C5.0")
+#     st.dataframe(metrik_df)
+
+#     st.subheader("📌 Confusion Matrix")
+#     st.dataframe(pd.DataFrame(cm))
+
+#     # =======================
+#     # Sample Prediksi C5.0
+#     # =======================
+#     st.subheader("📄 Perbandingan Prediksi vs Aktual")
+
+#     sample_size = 10
+#     sample_df = X_test.head(sample_size).copy()
+#     sample_df["Actual"] = y_test[:sample_size].values
+#     sample_df["Predict"] = y_pred[:sample_size]
+#     st.dataframe(sample_df)
 
 
-    # ============================
-    # Fungsi prediksi ADABOOST
-    # ============================
-    def prediksi_adb(gizi,model,beta):
-        hasil=[]
-        for a in range(len(gizi)):
-            vote_bobot={}
-            for pohon,b in zip(model,beta):
-                pred=prediksi_c50(gizi.iloc[a],pohon,gizi,target)
-                vote_bobot[pred]=vote_bobot.get(pred,0)+np.log(1/b)
-            hasil.append(max(vote_bobot, key=vote_bobot.get))
-        return np.array(hasil)
+#     # ================================================================
+#     # ====================    ADABOOST + C5.0    ======================
+#     # ================================================================
+#     st.subheader("🌳 Model Algoritma C5.0 + ADABOOST")
+#     st.markdown(""" Algoritma C5.0 digunakan sebagai base learner dari metode ensemble
+#                  Adaboost guna meningkatkan akurasi dibandingkan model tunggal.""")
 
-    # Prediksi Adaboost
-    y_pred_adb = prediksi_adb(X_test, model_adb, betas_adb)
-    y_pred_adb = [reverse_label_map.get(i, i) for i in y_pred_adb]
-    # ============================
-    #      EVALUASI ADABOOST
-    # ============================
-    acc_adb = accuracy_score(y_test, y_pred_adb)
-    cm_adb = confusion_matrix(y_test, y_pred_adb)
+#     model_adb = model_gizi['adaboost']['models']
+#     betas_adb = model_gizi['adaboost']['betas']
+#     clas_adb = np.array(model_gizi['adaboost']['classes'])   # pastikan array
 
-    precision_adb, recall_adb, f1_adb, _ = precision_recall_fscore_support(
-        y_test, y_pred_adb, average="macro", zero_division=0
-    )
 
-    gmean_adb = math.sqrt(precision_adb * recall_adb)
+#     # ============================
+#     # Fungsi prediksi ADABOOST
+#     # ============================
+#     def prediksi_adb(gizi,model,beta):
+#         hasil=[]
+#         for a in range(len(gizi)):
+#             vote_bobot={}
+#             for pohon,b in zip(model,beta):
+#                 pred=prediksi_c50(gizi.iloc[a],pohon,gizi,target)
+#                 vote_bobot[pred]=vote_bobot.get(pred,0)+np.log(1/b)
+#             hasil.append(max(vote_bobot, key=vote_bobot.get))
+#         return np.array(hasil)
 
-    metrik_adb_df = pd.DataFrame({
-        "Metrik": ["Accuracy", "Precision", "Recall (Sensitivity)", "F1-Score", "G-Mean"],
-        "Nilai": [acc_adb, precision_adb, recall_adb, f1_adb, gmean_adb]
-    })
+#     # Prediksi Adaboost
+#     y_pred_adb = prediksi_adb(X_test, model_adb, betas_adb)
+#     y_pred_adb = [reverse_label_map.get(i, i) for i in y_pred_adb]
+#     # ============================
+#     #      EVALUASI ADABOOST
+#     # ============================
+#     acc_adb = accuracy_score(y_test, y_pred_adb)
+#     cm_adb = confusion_matrix(y_test, y_pred_adb)
 
-    st.subheader("📌 Tabel Evaluasi Adaboost (C5.0 Base Learner)")
-    st.dataframe(metrik_adb_df)
+#     precision_adb, recall_adb, f1_adb, _ = precision_recall_fscore_support(
+#         y_test, y_pred_adb, average="macro", zero_division=0
+#     )
 
-    st.subheader("📌 Confusion Matrix Adaboost")
-    st.dataframe(pd.DataFrame(cm_adb))
+#     gmean_adb = math.sqrt(precision_adb * recall_adb)
 
-    # ============================
-    # Sample Prediksi Adaboost
-    # ============================
-    st.subheader("📄 Contoh Perbandingan Prediksi vs Aktual (Adaboost)")
+#     metrik_adb_df = pd.DataFrame({
+#         "Metrik": ["Accuracy", "Precision", "Recall (Sensitivity)", "F1-Score", "G-Mean"],
+#         "Nilai": [acc_adb, precision_adb, recall_adb, f1_adb, gmean_adb]
+#     })
 
-    sample_df_adb = X_test.head(sample_size).copy()
-    sample_df_adb["Actual"] = y_test[:sample_size].values
-    sample_df_adb["Predict"] = y_pred_adb[:sample_size]
+#     st.subheader("📌 Tabel Evaluasi Adaboost (C5.0 Base Learner)")
+#     st.dataframe(metrik_adb_df)
 
-    st.dataframe(sample_df_adb)
+#     st.subheader("📌 Confusion Matrix Adaboost")
+#     st.dataframe(pd.DataFrame(cm_adb))
+
+#     # ============================
+#     # Sample Prediksi Adaboost
+#     # ============================
+#     st.subheader("📄 Contoh Perbandingan Prediksi vs Aktual (Adaboost)")
+
+#     sample_df_adb = X_test.head(sample_size).copy()
+#     sample_df_adb["Actual"] = y_test[:sample_size].values
+#     sample_df_adb["Predict"] = y_pred_adb[:sample_size]
+
+#     st.dataframe(sample_df_adb)
 
 
 
