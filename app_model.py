@@ -448,7 +448,7 @@ elif menu == "prediksi":
 
         # === 4. Prediksi dengan ADABOOST ===
         df_final = pd.DataFrame(columns=fitur_asli)
-        df_final.loc[0] = 0  # default isi angka 0
+        df_final.loc[0] = 0.0  # default isi angka 0
 
         # isi kolom scaling
         for col in kolom_scaling:
