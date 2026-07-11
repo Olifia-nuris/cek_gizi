@@ -82,17 +82,13 @@ st.image("judul.png", use_container_width=True )
 st.markdown(
         """
         klasifikasi merupkan teknik data mining dengan mengelompokkan data berdasarkan karakteristik tertentu.
-        metode untuk melakukan klasifikasi beragam jenisnya sala satunya yang digunakan pada penelitian ini yaitu Algoritma C5.0 dengan metode
-        penguatan AdaBoost yang cara kerjanya membuat pohon keputusan setiap iterasi (n_estimator) dengan bobot berdasarkan eror pada iterasi 
-        sebelumnya.
-
-        Total data yang digunakan sebesar 2.759 data status gizi pada balita yang berasal dari dua sumber yaitu :
+        metode untuk melakukan klasifikasi beragam jenisnya salah satunya yang digunakan pada penelitian ini yaitu Algoritma C5.0 dengan metode
+        penguatan AdaBoost cara kerjanya membuat pohon keputusan setiap iterasi (n_estimator) dengan bobot berdasarkan eror pada iterasi 
+        sebelumnya. Total data yang digunakan sebesar 2.759 data status gizi pada balita yang berasal dari dua sumber yaitu :
         - UPT Puskesmas Sembayat berjumlah 1.477 balita
         - Kaggle berjumlah 1.289 balita 
         
-        Data yang digunakan terdapat 6 atribut diantaranya jenis kelamin, usia saat ini, Berat, Tinggi dan LILA (Lingkar Lengan Atas) dan status gizi
-        
-        Kelas status gizi yang akan diklasifikasikan terdiri dari 3 kelas diantaranya gizi baik, Gizi Rendah dan gizi berlebih
+        Data yang digunakan terdapat 6 atribut diantaranya jenis kelamin, usia saat ini, Berat, Tinggi dan LILA (Lingkar Lengan Atas) dan status gizi dan Kelas status gizi yang akan diklasifikasikan terdiri dari 3 kelas diantaranya gizi baik, Gizi Rendah dan gizi berlebih
         
         """
     )
