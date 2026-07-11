@@ -512,7 +512,7 @@ if df_puskesmas is not None and df_kaggle is not None:
                 14. Metode algoritma C5.0 tunggal.
                 15. Metode ensemble C5.0 sebagai weak learner dari metode boosting AdaBoost.
 
-                Dari 72 sub-skenario yang diujikan pada penelitian ini, diperoleh **kombinasi parameter dan kondisi terbaik** berdasarkan hasil tuning Grid Search, yaitu pada pembagian data training dan testkondisi **penghapusan outlier** dengan metode penanganan imbalance **SMOTE-ENN**, menggunakan kombinasi parameter **k_neighbors = 3**, **n_neighbors = 5**, **max_depth = 7**, dan **n_estimators = 50**, dengan metode **ensemble Algoritma C5.0-AdaBoost**.
+                Dari 72 sub-skenario yang diujikan pada penelitian ini, diperoleh **kombinasi parameter dan kondisi terbaik** berdasarkan hasil tuning Grid Search, yaitu pada *pembagian data training dan test 90:10* kondisi **penghapusan outlier** dengan metode penanganan imbalance **SMOTE-ENN**, menggunakan kombinasi parameter **k_neighbors = 3**, **n_neighbors = 5**, **max_depth = 7**, dan **n_estimators = 50**, dengan metode **ensemble Algoritma C5.0-AdaBoost**.
                 """)
                 # ============================
                 # ======= MODEL C5.0 =========
