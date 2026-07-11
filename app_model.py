@@ -239,9 +239,6 @@ if df_puskesmas is not None and df_kaggle is not None:
                     * Analisis distribusi dilakukan secara terpisah per kelas Status Gizi (Gizi Baik, Gizi Kurang, 
                     dan Gizi Lebih) karena apabila seluruh data digabung dalam satu grafik, distribusi yang 
                     dihasilkan akan bersifat umum dan menyembunyikan pola tersembunyi di masing-masing kelas. 
-                    Dengan memisahkan per kelas, sehingga dapat 
-                    Melihat sebaran nilai berat badan yang sesungguhnya di tiap kelas tanpa tertutupi oleh dominasi kelas mayoritas.
-                    dan Mendeteksi outlier secara lebih akurat dan spesifik, karena batas wajar nilai berat badan berbeda-beda untuk setiap kondisi status gizi.
                     """)
 
             except Exception as e:
@@ -274,13 +271,23 @@ if df_puskesmas is not None and df_kaggle is not None:
 
                 with st.expander("See notes"):
                     st.markdown("""
-                    * Berdasarkan grafik histogram fitur Tinggi, disetiap kelasnya yaitu :
+                        * Berdasarkan grafik histogram fitur Tinggi, distribusi pada setiap kelas status gizi dapat dijelaskan sebagai berikut:
+                        
+                        1. **Gizi Baik** — Data cenderung berdistribusi **mendekati normal** dengan puncak (modus) berada pada rentang tinggi 85–95, namun masih terdapat sedikit kemencengan (skewness) ke kiri akibat adanya nilai tinggi yang rendah (di bawah 55).
+                        2. **Gizi Kurang** — Data menunjukkan pola distribusi **bimodal** (dua puncak), yaitu pada rentang 85–90 dan 100–105, yang mengindikasikan adanya dua sub-kelompok data dengan karakteristik tinggi yang berbeda.
+                        3. **Gizi Lebih** — Data terkonsentrasi pada rentang tinggi 65–75 dengan bentuk distribusi yang **menceng ke kanan (right-skewed)**, di mana terdapat ekor panjang pada nilai tinggi yang lebih besar (di atas 100).
+                        
+                        * Sementara itu, berdasarkan grafik box plot, terlihat adanya data pencilan (*outlier*) pada setiap kelasnya:
+                        
+                        1. **Gizi Baik** — Teridentifikasi beberapa titik outlier pada sisi bawah (nilai tinggi rendah, berkisar di bawah 50), yang berada di luar batas *whisker* bawah.
+                        2. **Gizi Kurang** — Teridentifikasi beberapa titik outlier pada sisi bawah (nilai tinggi rendah, berkisar di bawah 55), dengan jumlah outlier yang relatif lebih banyak dibandingkan kelas lainnya.
+                        3. **Gizi Lebih** — Tidak teridentifikasi adanya titik outlier, baik pada sisi atas maupun bawah, yang mengindikasikan bahwa seluruh data pada kelas ini masih berada dalam rentang normal (*whisker* atas dan bawah).
+                        
                     * Analisis distribusi dilakukan secara terpisah per kelas Status Gizi (Gizi Baik, Gizi Kurang, 
                     dan Gizi Lebih) karena apabila seluruh data digabung dalam satu grafik, distribusi yang 
                     dihasilkan akan bersifat umum dan menyembunyikan pola tersembunyi di masing-masing kelas. 
-                    Dengan memisahkan per kelas, sehingga dapat 
-                    Melihat sebaran nilai berat badan yang sesungguhnya di tiap kelas tanpa tertutupi oleh dominasi kelas mayoritas.
-                    dan Mendeteksi outlier secara lebih akurat dan spesifik, karena batas wajar nilai berat badan berbeda-beda untuk setiap kondisi status gizi.
+                    * Secara umum, pada nilai tinggi badan ini outlier yang muncul pada kelas Gizi Baik dan Gizi Kurang berada pada sisi bawah (nilai tinggi yang rendah), sehingga perlu dipertimbangkan penanganannya (baik dihapus maupun diimputasi) sebelum data digunakan pada tahap pemodelan, guna menghindari bias hasil klasifikasi.
+                        kondisi status gizi.
                     """)
 
             except Exception as e:
@@ -313,13 +320,23 @@ if df_puskesmas is not None and df_kaggle is not None:
 
                 with st.expander("See notes"):
                     st.markdown("""
-                    * Berdasarkan grafik histogram fitur Usia, disetiap kelasnya yaitu :
+                    * Berdasarkan grafik histogram fitur Usia, distribusi pada setiap kelas status gizi dapat dijelaskan sebagai berikut:
+                        
+                        1. **Gizi Baik** — Data sangat terkonsentrasi (menumpuk) pada nilai usia tertinggi, dengan frekuensi yang jauh lebih besar dibanding nilai usia lainnya, sehingga bentuk distribusi **sangat menceng ke kiri (left-skewed)** dan hampir menyerupai nilai konstan pada rentang usia tersebut.
+                        2. **Gizi Kurang** — Data juga terkonsentrasi pada rentang usia tertinggi dengan pola distribusi yang **menceng tajam ke kiri (left-skewed)**, namun terdapat sedikit sebaran nilai pada rentang usia yang lebih rendah dibanding kelas lainnya.
+                        3. **Gizi Lebih** — Pola distribusi serupa dengan kedua kelas sebelumnya, yaitu data terpusat pada nilai usia tertinggi dengan bentuk **menceng ke kiri (left-skewed)**, meskipun sebaran pada rentang usia rendah relatif lebih banyak dibanding kelas Gizi Baik.
+                        
+                        * Sementara itu, berdasarkan grafik box plot, terlihat adanya data pencilan (*outlier*) pada setiap kelasnya:
+                        
+                        1. **Gizi Baik** — Tidak teridentifikasi adanya titik outlier, baik pada sisi atas maupun bawah, yang menunjukkan bahwa seluruh data usia pada kelas ini masih berada dalam rentang normal (*whisker* atas dan bawah).
+                        2. **Gizi Kurang** — Teridentifikasi **outlier dalam jumlah sangat banyak** pada sisi bawah (nilai usia yang rendah), yang berada jauh di luar batas *whisker* bawah, mengindikasikan sebaran data usia yang tidak merata pada kelas ini.
+                        3. **Gizi Lebih** — Tidak teridentifikasi adanya titik outlier, baik pada sisi atas maupun bawah, sehingga data usia pada kelas ini juga relatif seragam dan berada dalam rentang normal.
+                        
+                        * Secara umum, outlier yang signifikan hanya ditemukan pada kelas **Gizi Kurang**, sehingga perlu dipertimbangkan penanganannya (baik dihapus maupun diimputasi) sebelum data digunakan pada tahap pemodelan, guna menghindari bias hasil klasifikasi.
                     * Analisis distribusi dilakukan secara terpisah per kelas Status Gizi (Gizi Baik, Gizi Kurang, 
                     dan Gizi Lebih) karena apabila seluruh data digabung dalam satu grafik, distribusi yang 
                     dihasilkan akan bersifat umum dan menyembunyikan pola tersembunyi di masing-masing kelas. 
-                    Dengan memisahkan per kelas, sehingga dapat 
-                    Melihat sebaran nilai berat badan yang sesungguhnya di tiap kelas tanpa tertutupi oleh dominasi kelas mayoritas.
-                    dan Mendeteksi outlier secara lebih akurat dan spesifik, karena batas wajar nilai berat badan berbeda-beda untuk setiap kondisi status gizi.
+                    
                     """)
 
             except Exception as e:
@@ -352,13 +369,21 @@ if df_puskesmas is not None and df_kaggle is not None:
 
                 with st.expander("See notes"):
                     st.markdown("""
-                    * Berdasarkan grafik histogram fitur LiLA, disetiap kelasnya yaitu :
+                    * Berdasarkan grafik histogram fitur LiLA, distribusi pada setiap kelas status gizi dapat dijelaskan sebagai berikut:
+
+                        1. **Gizi Baik** — Data terkonsentrasi pada rentang 11–19 dengan puncak (modus) di sekitar nilai 14–15, namun terdapat kelompok data terpisah pada nilai mendekati 0 serta beberapa nilai ekstrem pada rentang 45–50, sehingga bentuk distribusi cenderung **multimodal** dengan ekor panjang ke kanan.
+                        2. **Gizi Kurang** — Data juga menunjukkan pola **multimodal**, dengan puncak tertinggi pada rentang nilai mendekati 0, puncak kedua pada rentang 10–16, serta sedikit sebaran pada nilai yang lebih tinggi hingga mendekati 45.
+                        3. **Gizi Lebih** — Data terkonsentrasi pada rentang nilai rendah (0–3) sebagai puncak utama, dengan puncak kedua yang lebih kecil pada rentang 14–18, membentuk pola **bimodal** dengan distribusi yang **menceng ke kanan (right-skewed)**.
+                * Sementara itu, berdasarkan grafik box plot, terlihat adanya data pencilan (*outlier*) pada setiap kelasnya:
+
+                        1. **Gizi Baik** — Teridentifikasi **outlier dalam jumlah banyak**, baik pada sisi bawah (nilai mendekati 0) maupun sisi atas (nilai di atas 20 hingga mendekati 50), menunjukkan sebaran data yang cukup ekstrem pada kelas ini.
+                        2. **Gizi Kurang** — Teridentifikasi beberapa titik outlier pada sisi atas (nilai di atas 40), sementara pada sisi bawah tidak ditemukan outlier karena nilai minimum masih berada dalam batas *whisker*.
+                        3. **Gizi Lebih** — Tidak teridentifikasi adanya titik outlier, baik pada sisi atas maupun bawah, yang menunjukkan bahwa seluruh data LiLA pada kelas ini masih berada dalam rentang normal (*whisker* atas dan bawah).
+
+                * Secara umum, outlier paling banyak ditemukan pada kelas **Gizi Baik**, diikuti oleh kelas **Gizi Kurang**, sehingga perlu dipertimbangkan penanganannya (baik dihapus maupun diimputasi) sebelum data digunakan pada tahap pemodelan, guna menghindari bias hasil klasifikasi.
                     * Analisis distribusi dilakukan secara terpisah per kelas Status Gizi (Gizi Baik, Gizi Kurang, 
                     dan Gizi Lebih) karena apabila seluruh data digabung dalam satu grafik, distribusi yang 
                     dihasilkan akan bersifat umum dan menyembunyikan pola tersembunyi di masing-masing kelas. 
-                    Dengan memisahkan per kelas, sehingga dapat 
-                    Melihat sebaran nilai berat badan yang sesungguhnya di tiap kelas tanpa tertutupi oleh dominasi kelas mayoritas.
-                    dan Mendeteksi outlier secara lebih akurat dan spesifik, karena batas wajar nilai berat badan berbeda-beda untuk setiap kondisi status gizi.
                     """)
 
             except Exception as e:
@@ -491,7 +516,7 @@ if df_puskesmas is not None and df_kaggle is not None:
                 14. Metode algoritma C5.0 tunggal.
                 15. Metode ensemble C5.0 sebagai weak learner dari metode boosting AdaBoost.
 
-                Dari 72 sub-skenario yang diujikan pada penelitian ini, diperoleh **kombinasi parameter dan kondisi terbaik** berdasarkan hasil tuning Grid Search, yaitu pada kondisi **penghapusan outlier** dengan metode penanganan imbalance **SMOTE-ENN**, menggunakan kombinasi parameter **k_neighbors = 3**, **n_neighbors = 5**, **max_depth = 7**, dan **n_estimators = 50**, dengan metode **ensemble Algoritma C5.0-AdaBoost**.
+                Dari 72 sub-skenario yang diujikan pada penelitian ini, diperoleh **kombinasi parameter dan kondisi terbaik** berdasarkan hasil tuning Grid Search, yaitu pada pembagian data training dan testkondisi **penghapusan outlier** dengan metode penanganan imbalance **SMOTE-ENN**, menggunakan kombinasi parameter **k_neighbors = 3**, **n_neighbors = 5**, **max_depth = 7**, dan **n_estimators = 50**, dengan metode **ensemble Algoritma C5.0-AdaBoost**.
                 """)
                 # ============================
                 # ======= MODEL C5.0 =========
